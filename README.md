@@ -70,6 +70,8 @@
 
 #### 13. Retrieve all courier records with payments greater than $50.
 
+![image](https://github.com/user-attachments/assets/7c1374d1-0309-4480-88bd-48b2088fb32a)
+
 
 
 ---
