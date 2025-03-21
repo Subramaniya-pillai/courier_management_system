@@ -1,0 +1,16 @@
+# TASK 2
+Solve the following queries in the Schema that you have created above
+1. List all customers:
+
+2. List all orders for a specific customer:
+3. List all couriers:
+4. List all packages for a specific order:
+5. List all deliveries for a specific courier:
+6. List all undelivered packages:
+7. List all packages that are scheduled for delivery today:
+8. List all packages with a specific status:
+9. Calculate the total number of packages for each courier.
+10. Find the average delivery time for each courier
+11. List all packages with a specific weight range:
+12. Retrieve employees whose names contain 'John'
+13. Retrieve all courier records with payments greater than $50. 
