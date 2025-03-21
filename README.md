@@ -213,5 +213,40 @@ no matches on either side
 ![image](https://github.com/user-attachments/assets/b372822b-eeb5-41f3-a280-f4779225b25e)
 
 
+## <p align="center"> TASK 5</p>
+
+### Scope: Inner Queries, Non Equi Joins, Equi joins,Exist,Any,All
+
+49. Find couriers that have a weight greater than the average weight of all couriers
+
+![image](https://github.com/user-attachments/assets/28d286c5-d2e8-4183-9cd6-539456c4711b)
+
+50. Find the names of all employees who have a salary greater than the average salary:
+
+![image](https://github.com/user-attachments/assets/9e19974b-49bb-4a9f-975b-c81c715a5719)
+
+51. Find the total cost of all courier services where the cost is less than the maximum cost
+
+![image](https://github.com/user-attachments/assets/686a8c43-dc2c-42fe-a8b6-99f1315eb0a6)
+
+52. Find all couriers that have been paid for
+
+![image](https://github.com/user-attachments/assets/020dd9cf-4887-4196-a0ed-ca2ccde85fa8)
+
+53. Find the locations where the maximum payment amount was made
+
+![image](https://github.com/user-attachments/assets/f21aa0cf-0f7d-4be0-a6c2-3b33b462059d)
+
+
+54. Find all couriers whose weight is greater than the weight of all couriers sent by a specific sender
+(e.g., 'SenderName'):
+
+![image](https://github.com/user-attachments/assets/eaf92f95-aa63-4e9d-9657-156ceec85795)
+
+## <p align="center"> CODING</p>
+
+## <p align="center"> TASK 1</p>
+
+
 ---
 
