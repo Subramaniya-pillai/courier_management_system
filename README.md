@@ -1,6 +1,6 @@
-# Courier Management System
+## <p align="center">courier management system</p>
 
-## Task 1
+## <p align="center"> TASK 1</p>
 ### Objective:
 - Design a SQL schema for a Courier Management System.
 - Create tables for Customers, Couriers, Orders, and Parcels.
@@ -47,8 +47,13 @@
 
 ![image](https://github.com/user-attachments/assets/778bd9ac-8fc9-4f95-916c-cdc38a59f7aa)
 
+#### relationships between these tables using appropriate foreign keys
 
-## Task 2
+![image](https://github.com/user-attachments/assets/c5d73266-43e6-4315-86ca-a292ec9ce79f)
+
+
+
+## <p align="center"> TASK 2</p>
 ### Objective:
 - Perform SQL queries on the created database.
 
