@@ -1,4 +1,4 @@
-## <p align="center">courier management system</p>
+# <p align="center">COURIER MANAGEMENT SYSTEM</p>
 
 ## <p align="center"> TASK 1</p>
 ### Objective:
