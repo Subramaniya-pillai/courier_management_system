@@ -247,6 +247,48 @@ no matches on either side
 
 ## <p align="center"> TASK 1</p>
 
+1. Write a program that checks whether a given order is delivered or not based on its status (e.g.,
+"Processing," "Delivered," "Cancelled"). Use if-else statements for this.
 
----
+````
+def check_order_status(status):
+    status = status.lower()
+    if status == "processing":
+        print("Your order is being processed.")
+    elif status == "delivered":
+        print("Your order has been delivered.")
+    elif status == "cancelled":
+        print("Your order was cancelled.")
+    else:
+        print("Invalid status entered.")
+
+status = input("Enter order status (Processing, Delivered, Cancelled): ")
+check_order_status(status) 
+```
+![image](https://github.com/user-attachments/assets/b7583cf0-9afc-482c-97b8-9acd15a04924)
+
+2. Implement a switch-case statement to categorize parcels based on their weight into "Light,"
+"Medium," or "Heavy."
+
+```
+def categorize_parcel(weight):
+    if weight < 5:
+        return "Light"
+    elif 5 <= weight <= 15:
+        return "Medium"
+    else:
+        return "Heavy"
+
+weight = float(input("Enter the parcel weight (kg): "))
+print(f"Parcel category: {categorize_parcel(weight)}")
+```
+![image](https://github.com/user-attachments/assets/2784c6c8-5366-4422-a95e-70b1f9267ba6)
+
+3. Implement User Authentication 1. Create a login system for employees and customers using Java
+control flow statements.
+
+```
+
+```
+
 
