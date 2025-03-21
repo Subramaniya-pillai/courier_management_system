@@ -17,35 +17,66 @@
 
 ---
 
+#### tables created in the data base
+![image](https://github.com/user-attachments/assets/56ebf584-6618-41f6-b47b-7358fe980316)
+
+#### 1. courier table
+
+![image](https://github.com/user-attachments/assets/6abc4d38-0a03-4ade-a64a-489250d26706)
+
+
+#### 3. Employee table
+
+   
+![image](https://github.com/user-attachments/assets/81e89dac-84b1-4935-9721-5f00366bd869)
+
+
+#### 4. User table
+   
+![image](https://github.com/user-attachments/assets/a1ac0ecc-2276-4fee-80e2-f3f113e7f2ed)
+
+
+#### 5. Services table
+![image](https://github.com/user-attachments/assets/0665f0b1-a209-4137-8973-bfa05d0e5b7c)
+
+#### 6. Payment table
+
+![image](https://github.com/user-attachments/assets/49c0e37a-a936-4b0b-bc3b-126dc9ec2810)
+
+#### 7. Location table
+
+![image](https://github.com/user-attachments/assets/778bd9ac-8fc9-4f95-916c-cdc38a59f7aa)
+
+
 ## Task 2
 ### Objective:
 - Perform SQL queries on the created database.
 
 ### Queries Performed:
-#### 1. List all customers.
+#### 01. List all customers.
    
    ![01](https://github.com/user-attachments/assets/b0ce41b3-c35a-4f10-9837-79ed11ac0e72)
-#### 2. List all orders for a specific customer.
+#### 02. List all orders for a specific customer.
 
    ![image](https://github.com/user-attachments/assets/b6ee5c3a-6ec1-408f-b782-d42e9411658b)
 
-#### 3. List all couriers.
+#### 03. List all couriers.
 
 ![image](https://github.com/user-attachments/assets/8aaf17b5-4613-4e5f-bde6-4f7012d212d3)
 
-#### 4. List all packages for a specific order.
+#### 04. List all packages for a specific order.
 
 ![image](https://github.com/user-attachments/assets/429ace3f-7523-42df-aca1-056a6d2288c2)
 
-#### 5. List all deliveries for a specific courier: 
+#### 05. List all deliveries for a specific courier: 
 
 ![image](https://github.com/user-attachments/assets/70c0feb8-fb27-435b-a3f7-4adab24bae8f)
 
-#### 6. List all undelivered packages.
+#### 06. List all undelivered packages.
 
    ![image](https://github.com/user-attachments/assets/f13d379b-45ca-4c4c-8ca6-90d85783022a)
 
-#### 7. List all packages scheduled for delivery today.
+#### 07. List all packages scheduled for delivery today.
 
 ![image](https://github.com/user-attachments/assets/1819300a-2ee7-42f9-abdc-d309add5ce8d)
 
