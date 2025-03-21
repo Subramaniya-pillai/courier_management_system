@@ -105,6 +105,113 @@
 
 ## <p align="center"> TASK 4</p>
 
+23. Retrieve Payments with Courier Information 
+
+![image](https://github.com/user-attachments/assets/9b06c060-92a3-4946-bcb3-a5edc2b3d365)
+
+24. Retrieve Payments with Location Information
+
+![image](https://github.com/user-attachments/assets/a60566fd-60ef-42f2-a73f-0359906afb03)
+
+25. Retrieve Payments with Courier and Location Information
+
+![image](https://github.com/user-attachments/assets/819123fd-43e7-4d09-9611-46cec60a821f)
+
+26.  List all payments with courier details
+
+   same as 23rd question
+
+27. Total payments received for each courier
+
+![image](https://github.com/user-attachments/assets/a6a0f96d-81bf-4002-b402-5ae054414bb5)
+
+28. List payments made on a specific date
+
+![image](https://github.com/user-attachments/assets/33c18db9-93f8-4f73-8497-eb25630752f0)
+
+29. Get Courier Information for Each Payment
+
+![image](https://github.com/user-attachments/assets/4928dec6-9d80-44d1-b712-e384d516ab97)
+
+30. Get Payment Details with Location
+
+![image](https://github.com/user-attachments/assets/35159888-a18b-4331-9076-c07af659a9f6)
+
+31. Calculating Total Payments for Each Courier
+
+![image](https://github.com/user-attachments/assets/a6a0f96d-81bf-4002-b402-5ae054414bb5)
+
+32. List Payments Within a Date Range
+
+![image](https://github.com/user-attachments/assets/3cb224ec-a483-4bd6-9b10-b4f34e771759)
+
+33. Retrieve a list of all users and their corresponding courier records, including cases where there are
+no matches on either side 
+
+![image](https://github.com/user-attachments/assets/2112c2b7-8f41-4dab-ac47-88554ce55476)
+
+34. Retrieve a list of all couriers and their corresponding services, including cases where there are no
+matches on either side 
+
+![image](https://github.com/user-attachments/assets/b187cb06-7ea8-4eb5-9246-a1f9caa68e09)
+
+35. . Retrieve a list of all employees and their corresponding payments, including cases where there are
+no matches on either side
+
+![image](https://github.com/user-attachments/assets/803df6d3-4b2c-4a58-a3b5-1640ef5a6c83)
+
+36. List all users and all courier services, showing all possible combinations.
+
+![image](https://github.com/user-attachments/assets/ba2fb885-b2ff-4447-88f1-6d568549e25b)
+
+37. . List all employees and all locations, showing all possible combinations:
+
+![image](https://github.com/user-attachments/assets/a292c7ad-daf8-4e25-9da7-066166794261)
+
+38. Retrieve a list of couriers and their corresponding sender information (if available)
+
+![image](https://github.com/user-attachments/assets/d3faa57d-9cb2-4f84-8c9f-d4a09af043d1)
+
+39. Retrieve a list of couriers and their corresponding receiver information (if available):
+
+![image](https://github.com/user-attachments/assets/3ae8c29c-49a1-4aba-ad1a-c070e304fb08)
+
+40. Retrieve a list of couriers along with the courier service details (if available):
+
+![image](https://github.com/user-attachments/assets/f69c659e-39bf-43f0-8f1d-4bdc9e9ba669)
+
+41. Retrieve a list of employees and the number of couriers assigned to each employee: 
+
+![image](https://github.com/user-attachments/assets/3ca1f665-c4f0-4dbc-9f48-2855039749f9)
+
+42. Retrieve a list of locations and the total payment amount received at each location:
+
+![image](https://github.com/user-attachments/assets/2c346c9d-8ff3-484d-b05f-a4fb26f356fd)
+
+43. Retrieve all couriers sent by the same sender (based on SenderName). 
+
+![image](https://github.com/user-attachments/assets/72773aa7-a88a-4e9d-9634-d3d8fe4e12bb)
+
+44.  List all employees who share the same role. 
+
+![image](https://github.com/user-attachments/assets/29ee476d-5f79-4329-8e76-fa26656ec0ff)
+
+45.  Retrieve all payments made for couriers sent from the same location.
+
+![image](https://github.com/user-attachments/assets/d65fc365-f3be-4192-8cae-26808aa4d2c2)
+
+46. Retrieve all couriers sent from the same location (based on SenderAddress). 
+
+![image](https://github.com/user-attachments/assets/cefffc50-2060-4605-91d1-a6d788f80876)
+
+47. List employees and the number of couriers they have delivered:
+
+![image](https://github.com/user-attachments/assets/27b94493-6d2b-4138-8bc6-072d3e18d573)
+
+48. Find couriers that were paid an amount greater than the cost of their respective courier services
+
+![image](https://github.com/user-attachments/assets/b372822b-eeb5-41f3-a280-f4779225b25e)
+
 
 ---
 
