@@ -124,23 +124,33 @@
 
     ![image](https://github.com/user-attachments/assets/0d8c843d-d497-4418-9746-9c854a381138)
 
-18. Find the courier with the highest average delivery time:
+17. Find the courier with the highest average delivery time:
+    
+   ![image](https://github.com/user-attachments/assets/974bf7d9-619d-413f-9297-2f50a6c13c96)
 
     
-20. Find Locations with Total Payments Less Than a Certain Amount
+18. Find Locations with Total Payments Less Than a Certain Amount
 
 ![image](https://github.com/user-attachments/assets/e839c8dd-b3d8-4057-b629-aeb6e136347e)
 
-22. Calculate Total Payments per Location
+19. Calculate Total Payments per Location
 
 ![image](https://github.com/user-attachments/assets/ef601391-1f56-4acf-a4da-90e62f97f5db)
 
-24. Retrieve couriers who have received payments totaling more than $1000 in a specific location
+20. Retrieve couriers who have received payments totaling more than $1000 in a specific location
 (LocationID = X):
-25. Retrieve couriers who have received payments totaling more than $1000 after a certain date
+
+![image](https://github.com/user-attachments/assets/cb71b1ce-4a0e-4c3f-953b-db9f79594063)
+
+
+21. Retrieve couriers who have received payments totaling more than $1000 after a certain date
 (PaymentDate > 'YYYY-MM-DD'):
-26. Retrieve locations where the total amount received is more than $5000 before a certain date
-(PaymentDate > 'YYYY-MM-DD')
+
+![image](https://github.com/user-attachments/assets/3b597a78-11e7-46be-9a7e-27bc345d8473)
+
+
+
+
 
 ## <p align="center"> TASK 4</p>
 
