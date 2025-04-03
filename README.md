@@ -803,6 +803,26 @@ and formats it correctly, including capitalizing the first letter of each word a
 zip code. 
 
 ```
+import re
+
+# Function to format address
+def format_address(street, city, state, zip_code):
+    if not re.fullmatch(r"\d{6}(-\d{4})?", zip_code):  # Validates ZIP (##### or #####-####)
+        return "❌ Invalid ZIP Code! Use format ##### or #####-####."
+
+    formatted_street = street.title()  # Capitalizes first letter of each word
+    formatted_city = city.title()
+    formatted_state = state.upper()  # Converts state to uppercase
+
+    return f"✅ Formatted Address:\n{formatted_street}\n{formatted_city}, {formatted_state} {zip_code}"
+
+# Get user input and format address
+street = input("Enter Street: ")
+city = input("Enter City: ")
+state = input("Enter State (2-letter code): ")
+zip_code = input("Enter ZIP Code (##### or #####-####): ")
+
+print(format_address(street, city, state, zip_code))
 
 ```
 
