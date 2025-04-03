@@ -296,48 +296,226 @@ no matches on either side
 
 ## <p align="center"> TASK 1</p>
 
-1. Write a program that checks whether a given order is delivered or not based on its status (e.g.,
-"Processing," "Delivered," "Cancelled"). Use if-else statements for this.
+### Connecting the database 
 
-````
-def check_order_status(status):
-    status = status.lower()
-    if status == "processing":
-        print("Your order is being processed.")
-    elif status == "delivered":
-        print("Your order has been delivered.")
-    elif status == "cancelled":
-        print("Your order was cancelled.")
-    else:
-        print("Invalid status entered.")
-
-status = input("Enter order status (Processing, Delivered, Cancelled): ")
-check_order_status(status) 
-```
-![image](https://github.com/user-attachments/assets/b7583cf0-9afc-482c-97b8-9acd15a04924)
-
-2. Implement a switch-case statement to categorize parcels based on their weight into "Light,"
-"Medium," or "Heavy."
+#### Created a python file named as db_connection for connecting database
 
 ```
+def get_db_connection():
+    import mysql.connector
+
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Vineeth1246@",
+            database="courier_db"
+        )
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Database Connection Error: {err}")
+        return None
+
+```
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/32359cd0-6791-429d-90b7-6f403f5dfdf7" width="45%" />
+</p>
+
+### Control Flow Statements 
+
+1. Write a program that checks whether a given order is delivered or not based on its status (e.g., "Processing," "Delivered," "Cancelled"). Use if-else statements for this.
+```
+def get_db_connection():
+    import mysql.connector
+
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Vineeth1246@",
+            database="courier_db"
+        )
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Database Connection Error: {err}")
+        return None
+
+```
+### <p align="center"> output / database </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/97886216-6c97-4a82-afa5-db53b4d0fc50" width="45%" />
+  <img src="https://github.com/user-attachments/assets/ffdaf511-907d-4a50-a5ce-fc1ec545da70" width="45%" />
+</p>
+
+2.   Implement a switch-case statement to categorize parcels based on their weight into "Light," "Medium," or "Heavy."
+
+```
+from db_connection import get_db_connection
+
 def categorize_parcel(weight):
-    if weight < 5:
-        return "Light"
-    elif 5 <= weight <= 15:
-        return "Medium"
-    else:
-        return "Heavy"
+    """Categorize parcel based on weight."""
+    categories = {
+        "Light": lambda w: w < 2,
+        "Medium": lambda w: 2 <= w < 5,
+        "Heavy": lambda w: w >= 5
+    }
 
-weight = float(input("Enter the parcel weight (kg): "))
-print(f"Parcel category: {categorize_parcel(weight)}")
+    for category, condition in categories.items():
+        if condition(weight):
+            return category
+    return "Unknown"
+
+def get_parcel_weight(courier_id):
+    """Fetch weight from the database based on courier_id."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = "SELECT weight FROM courier WHERE courier_id = %s"
+    cursor.execute(query, (courier_id,))
+    result = cursor.fetchone()
+
+    conn.close()
+
+    if result:
+        return result[0]  # Extract weight value from result tuple
+    else:
+        return None
+
+# Example usage
+courier_id = int(input("Enter Courier ID: "))
+weight = get_parcel_weight(courier_id)
+
+if weight is not None:
+    category = categorize_parcel(weight)
+    print(f"Parcel with Courier ID {courier_id} is categorized as: {category}")
+else:
+    print("Courier ID not found!")
+
 ```
-![image](https://github.com/user-attachments/assets/2784c6c8-5366-4422-a95e-70b1f9267ba6)
+
+### <p align="center"> output / database </p>
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/78ca4418-00e7-4bd4-a325-1735cf123f12" width="45%" />
+  <img src="https://github.com/user-attachments/assets/0e2a3a31-b67a-4806-af23-21c7d427d0a6" width="45%" />
+</p>
+
 
 3. Implement User Authentication 1. Create a login system for employees and customers using Java
 control flow statements.
 
-```
 
 ```
+def get_db_connection():
+    import mysql.connector
 
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Vineeth1246@",
+            database="courier_db"
+        )
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Database Connection Error: {err}")
+        return None
+
+# Function to authenticate employee login
+def employee_login(name, password):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM employee WHERE name = %s AND password = %s"
+    cursor.execute(query, (name, password))
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if result:
+        print(f"✅ Login successful! Welcome, {name}.")
+    else:
+        print("❌ Invalid credentials. Please try again.")
+
+# Example usage
+if __name__ == "__main__":
+    emp_name = input("Enter your name: ")
+    emp_password = input("Enter your password: ")
+    employee_login(emp_name, emp_password)
+
+```
+### <p align="center"> logging in with valid credentials / invalid credentials </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/bc5f6f0c-ba4a-4cfc-8d5f-d1e5335a2e01" width="45%" />
+  <img src="https://github.com/user-attachments/assets/fcacbb8b-a8da-49b2-a782-0a7eb2032853" width="45%" />
+</p>
+
+4. Implement Courier Assignment Logic 1. Develop a mechanism to assign couriers to shipments based
+on predefined criteria (e.g., proximity, load capacity) using loops.
+
+```
+import mysql.connector
+
+# Establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Vineeth1246@",
+        database="courier_db"
+    )
+
+# Function to assign a courier to a shipment
+def assign_courier(shipment_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Fetch shipment details (location and weight)
+    cursor.execute("SELECT location_id, weight FROM shipment WHERE shipment_id = %s", (shipment_id,))
+    shipment = cursor.fetchone()
+
+    if not shipment:
+        print("❌ Shipment not found.")
+        return
+
+    shipment_location, shipment_weight = shipment
+
+    # Fetch a suitable courier (fixing query)
+    query = """
+        SELECT courier_id, weight 
+        FROM courier 
+        WHERE weight >= %s 
+        ORDER BY weight ASC 
+        LIMIT 1;
+    """
+    cursor.execute(query, (shipment_weight,))
+    assigned_courier = cursor.fetchone()
+
+    if assigned_courier:
+        courier_id, courier_weight = assigned_courier
+        print(f"✅ Assigned Courier: {courier_id} (Max Weight: {courier_weight})")
+
+        # Update shipment with assigned courier
+        cursor.execute("UPDATE shipment SET courier_id = %s WHERE shipment_id = %s", (courier_id, shipment_id))
+        conn.commit()
+    else:
+        print("❌ No suitable courier available.")
+
+    cursor.close()
+    conn.close()
+
+# Example usage
+if __name__ == "__main__":
+    shipment_id = int(input("Enter Shipment ID: "))
+    assign_courier(shipment_id)
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b8a70c5f-b10a-4449-905a-a92913c376e8" width="45%" />
+</p>
 
