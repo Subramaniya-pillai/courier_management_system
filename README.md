@@ -519,3 +519,556 @@ if __name__ == "__main__":
   <img src="https://github.com/user-attachments/assets/b8a70c5f-b10a-4449-905a-a92913c376e8" width="45%" />
 </p>
 
+
+
+## <p align="center"> TASK 2</p>
+
+
+### <p align="center"> Loops and Iteration</p>
+
+5. Write a python program that uses a for loop to display all the orders for a specific customer.
+   
+```
+import mysql.connector
+
+# Establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Vineeth1246@",
+        database="courier_db"
+    )
+
+# Function to display all orders for a specific customer
+def display_orders(customer_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+        SELECT courier_id, tracking_number, status, order_date 
+        FROM courier 
+        WHERE customer_id = %s
+    """
+    cursor.execute(query, (customer_id,))
+    orders = cursor.fetchall()
+
+    if not orders:
+        print("❌ No orders found for this customer.")
+    else:
+        print(f"📦 Orders for Customer ID {customer_id}:")
+        for order in orders:
+            print(f"✅ Courier ID: {order[0]}, Tracking No: {order[1]}, Status: {order[2]}, Order Date: {order[3]}")
+
+    cursor.close()
+    conn.close()
+
+# Example usage
+if __name__ == "__main__":
+    customer_id = int(input("Enter Customer ID: "))
+    display_orders(customer_id)
+
+```
+### <p align="center"> output / database </p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8cddf70d-3684-4c9f-bb25-8785e0598d4c" width="45%" />
+   <img src="https://github.com/user-attachments/assets/f5d40772-2f1f-4d01-b280-707b5616e99f" width="45%" />
+
+</p>
+
+6. Implement a while loop to track the real-time location of a courier until it reaches its destination.
+```
+import mysql.connector
+import time
+
+
+# Establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Vineeth1246@",
+        database="courier_db"
+    )
+
+
+# Function to track courier location in real-time
+def track_courier(courier_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    while True:
+        # Fetch current location of the courier
+        cursor.execute("""
+            SELECT location_name FROM location 
+            WHERE location_id = (SELECT location_id FROM courier WHERE courier_id = %s)
+        """, (courier_id,))
+
+        location = cursor.fetchone()
+
+        if not location:
+            print("❌ Courier not found.")
+            break
+
+        print(f"🚚 Current Location: {location[0]}")
+
+        # Check if courier has reached its destination
+        cursor.execute("""
+            SELECT status FROM courier WHERE courier_id = %s
+        """, (courier_id,))
+        status = cursor.fetchone()
+
+        if status and status[0].lower() == "delivered":
+            print("✅ Courier has reached its destination!")
+            break
+
+        time.sleep(5)  # Simulate real-time tracking (refreshes every 5 seconds)
+
+    cursor.close()
+    conn.close()
+
+
+# Example usage
+if __name__ == "__main__":
+    courier_id = int(input("Enter Courier ID: "))
+    track_courier(courier_id)
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f13bf7fe-50da-4627-ab80-3a66e4fd7e21" width="45%" />
+</p>
+
+7. Create an array to store the tracking history of a parcel, where each entry represents a location
+update.
+
+```
+import mysql.connector
+
+# Establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Vineeth1246@",
+        database="courier_db"
+    )
+
+# Function to fetch tracking history
+def track_courier(courier_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+    SELECT t.tracking_id, c.courier_id, l.location_name, t.update_time, t.status
+    FROM tracking t
+    JOIN location l ON t.location_id = l.location_id
+    JOIN courier c ON t.courier_id = c.courier_id
+    WHERE c.courier_id = %s
+    ORDER BY t.update_time ASC;
+    """
+    cursor.execute(query, (courier_id,))
+    tracking_data = cursor.fetchall()
+
+    if tracking_data:
+        print(f"📦 Tracking History for Courier ID {courier_id}:")
+        for row in tracking_data:
+            print(f"➡ {row[2]} | {row[3]} | Status: {row[4]}")
+    else:
+        print("❌ No tracking history found.")
+
+    cursor.close()
+    conn.close()
+
+# Example usage
+if __name__ == "__main__":
+    courier_id = input("Enter Courier ID: ")
+    track_courier(courier_id)
+
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/432c6562-2daf-42eb-b848-bcb137043554" width="45%" />
+</p>
+
+
+8. Implement a method to find the nearest available courier for a new order using an array of couriers.
+
+```
+import mysql.connector
+
+
+# Establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Vineeth1246@",
+        database="courier_db"
+    )
+
+
+# Function to find the nearest available courier
+def find_nearest_courier(destination_location, weight):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Fetch couriers who are at the nearest location and have enough capacity
+    query = """
+    SELECT courier_id, location_id, weight 
+    FROM courier
+    WHERE location_id = %s AND weight >= %s
+    ORDER BY weight ASC
+    LIMIT 1;
+    """
+
+    cursor.execute(query, (destination_location, weight))
+    courier = cursor.fetchone()
+
+    if courier:
+        courier_id, location_id, courier_weight = courier
+        print(
+            f"✅ Nearest Available Courier: ID {courier_id} at Location {location_id} with Capacity {courier_weight} kg.")
+    else:
+        print("❌ No suitable courier available.")
+
+    cursor.close()
+    conn.close()
+
+
+# Example usage
+if __name__ == "__main__":
+    destination_location = input("Enter Destination Location ID: ")
+    weight = float(input("Enter Package Weight: "))
+    find_nearest_courier(destination_location, weight)
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/36de4662-7501-4bb7-8744-a7c22ee31669" width="45%" />
+</p>
+
+
+
+## <p align="center"> TASK 4</p>
+### <p align="center"> Strings,2d Arrays, user defined functions,Hashmap </p>
+
+
+9.  _Parcel Tracking_ Create a program that allows users to input a parcel tracking number.Store the tracking number and Status in 2d String Array. Initialize the array with values. Then, simulate the tracking process by displaying messages like "Parcel in transit," "Parcel out for delivery," or "Parcel delivered" based on the tracking number's status.
+
+```
+# Initialize a 2D array with tracking numbers and statuses
+parcel_tracking_data = [
+    ["TRK123", "Parcel in transit"],
+    ["TRK456", "Parcel out for delivery"],
+    ["TRK789", "Parcel delivered"],
+    ["TRK101", "Parcel in transit"],
+    ["TRK202", "Parcel out for delivery"],
+    ["TRK303", "Parcel delivered"]
+]
+
+# Function to track parcel status
+def track_parcel(tracking_number):
+    for parcel in parcel_tracking_data:
+        if parcel[0] == tracking_number:
+            print(f"📦 Tracking Number: {tracking_number} - Status: {parcel[1]}")
+            return
+    print("❌ Tracking number not found.")
+
+# Get user input
+tracking_number = input("Enter Tracking Number: ").strip().upper()
+track_parcel(tracking_number)
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5d98f9fd-e5ab-402e-b278-612d48e561dc" width="45%" />
+</p>
+
+10. _Customer Data Validation_: Write a function which takes 2 parameters, data-denotes the data and
+detail-denotes if it is name addtress or phone number.Validate customer information based on
+following critirea. Ensure that names contain only letters and are properly capitalized, addresses do not
+contain special characters, and phone numbers follow a specific format (e.g., ###-###-####).
+
+```
+
+```
+### <p align="center"> valid  / invalid format </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3bd2a444-2549-4588-b82a-993d560d0f69" width="45%" />
+     <img src="https://github.com/user-attachments/assets/5330aa21-0f7b-4e38-a032-552f9ddd99d2" width="45%" />
+
+</p>
+
+11. _Address Formatting_: Develop a function that takes an address as input (street, city, state, zip code)
+and formats it correctly, including capitalizing the first letter of each word and properly formatting the
+zip code. 
+
+```
+
+```
+
+
+### <p align="center"> valid  / invalid format </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c85f8188-99cc-464c-9f6c-8c9ec52a3e08" width="45%" />
+     <img src="https://github.com/user-attachments/assets/4814a208-b112-430c-a882-9e69160f72d6" width="45%" />
+
+</p>
+
+
+12. _Order Confirmation Email_: Create a program that generates an order confirmation email. The email
+should include details such as the customer's name, order number, delivery address, and expected
+delivery date. 
+
+```
+import datetime
+
+# Function to generate order confirmation email
+def generate_order_email(customer_name, order_number, address, delivery_date):
+    email_template = f"""
+    Subject: 🛍️ Order Confirmation - #{order_number}
+
+    Dear {customer_name},
+
+    Thank you for your order! We are pleased to confirm your purchase.
+
+    📦 **Order Number:** {order_number}  
+    📍 **Delivery Address:** {address}  
+    🚚 **Expected Delivery Date:** {delivery_date}  
+
+    Your package is being prepared for shipment. You will receive tracking updates soon.
+
+    If you have any questions, feel free to contact us.
+
+    Regards,  
+    **Courier Service Team**  
+    """
+    return email_template
+
+# Get user input
+customer_name = input("Enter Customer Name: ")
+order_number = input("Enter Order Number: ")
+address = input("Enter Delivery Address: ")
+
+# Set expected delivery date (3 days from today)
+delivery_date = (datetime.date.today() + datetime.timedelta(days=3)).strftime("%Y-%m-%d")
+
+# Generate and display email
+email_content = generate_order_email(customer_name, order_number, address, delivery_date)
+print("\n" + email_content)
+
+```
+
+
+![image](https://github.com/user-attachments/assets/cee4ac26-23c7-4068-b7b9-6a7f84f74118)
+![image](https://github.com/user-attachments/assets/3b6d7525-3372-4711-ae01-a2591fc76915)
+![image](https://github.com/user-attachments/assets/66e89ad2-b90c-45ce-a095-aac8f9edfe18)
+
+
+
+13. _Calculate Shipping Costs_ : Develop a function that calculates the shipping cost based on the distance
+between two locations and the weight of the parcel. You can use string inputs for the source and
+destination addresses.
+
+
+```
+# Sample distance dictionary (mock data)
+distance_data = {
+    ("Chennai", "Bangalore"): 350,
+    ("Chennai", "Delhi"): 2200,
+    ("Chennai", "Mumbai"): 1330,
+    ("Bangalore", "Mumbai"): 980,
+    ("Mumbai", "Delhi"): 1440,
+    ("Delhi", "Kolkata"): 1530,
+    ("Hyderabad", "Chennai"): 630,
+}
+
+# Shipping cost rates
+BASE_COST = 50  # Base charge
+COST_PER_KM = 0.5  # Cost per km
+COST_PER_KG = 10  # Cost per kg
+
+
+# Function to calculate shipping cost
+def calculate_shipping_cost(source, destination, weight):
+    # Convert input to title case to match dictionary keys
+    source = source.title()
+    destination = destination.title()
+
+    # Check if distance exists in mock data
+    if (source, destination) in distance_data:
+        distance = distance_data[(source, destination)]
+    elif (destination, source) in distance_data:  # Reverse lookup
+        distance = distance_data[(destination, source)]
+    else:
+        print("❌ Shipping route not found in database.")
+        return
+
+    # Calculate cost
+    shipping_cost = BASE_COST + (distance * COST_PER_KM) + (weight * COST_PER_KG)
+
+    # Display result
+    print(f"✅ Shipping Cost from {source} to {destination}: ₹{shipping_cost:.2f}")
+
+
+# Get user input
+source = input("Enter Source Location: ")
+destination = input("Enter Destination Location: ")
+weight = float(input("Enter Parcel Weight (kg): "))
+
+# Call function
+calculate_shipping_cost(source, destination, weight)
+
+```
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/855ef218-40c0-4dbd-bea3-0f9de3fc99e0" width="45%" />
+
+</p>
+
+
+14. _Password Generator_: Create a function that generates secure passwords for courier system
+accounts. Ensure the passwords contain a mix of uppercase letters, lowercase letters, numbers, and
+special characters. 
+
+
+
+```
+import random
+import string
+
+# Function to generate a secure password
+def generate_password(length=12):
+    if length < 8:
+        print("❌ Password length must be at least 8 characters.")
+        return None
+
+    # Define character sets
+    upper = string.ascii_uppercase  # A-Z
+    lower = string.ascii_lowercase  # a-z
+    digits = string.digits  # 0-9
+    special = "!@#$%^&*()-_=+"
+
+    # Ensure at least one character from each category
+    password = [
+        random.choice(upper),
+        random.choice(lower),
+        random.choice(digits),
+        random.choice(special),
+    ]
+
+    # Fill the remaining length with random choices from all sets
+    all_chars = upper + lower + digits + special
+    password += random.choices(all_chars, k=length - 4)
+
+    # Shuffle the password to ensure randomness
+    random.shuffle(password)
+
+    # Convert list to string and return
+    return "".join(password)
+
+# Get user input for password length
+length = int(input("Enter the desired password length (minimum 8): "))
+
+# Generate and display the password
+secure_password = generate_password(length)
+if secure_password:
+    print(f"✅ Generated Secure Password: {secure_password}")
+
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/45aba25f-74d7-4485-a8c5-b35fafe4f9e6" width="45%" />
+
+</p>
+
+
+15. _Find Similar Addresses_ : Implement a function that finds similar addresses in the system. This can be
+useful for identifying duplicate customer entries or optimizing delivery routes.Use string functions to
+implement this. 
+
+
+```
+import mysql.connector
+from difflib import SequenceMatcher
+
+# Function to establish database connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="your_password",
+        database="courier_db"
+    )
+
+# Function to calculate similarity between two strings
+def address_similarity(addr1, addr2):
+    return SequenceMatcher(None, addr1, addr2).ratio()
+
+# Function to find similar addresses
+def find_similar_addresses(threshold=0.8):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Fetch all addresses from the location table
+    cursor.execute("SELECT location_id, address FROM location")
+    addresses = cursor.fetchall()
+
+    similar_pairs = []
+    
+    # Compare each address with others
+    for i in range(len(addresses)):
+        for j in range(i + 1, len(addresses)):
+            addr1_id, addr1 = addresses[i]
+            addr2_id, addr2 = addresses[j]
+
+            similarity = address_similarity(addr1, addr2)
+
+            if similarity >= threshold:
+                similar_pairs.append((addr1_id, addr1, addr2_id, addr2, round(similarity, 2)))
+
+    cursor.close()
+    conn.close()
+
+    # Display results
+    if similar_pairs:
+        print("✅ Similar Addresses Found:")
+        for pair in similar_pairs:
+            print(f"📍 Address {pair[0]}: {pair[1]}")
+            print(f"📍 Address {pair[2]}: {pair[3]}")
+            print(f"🔍 Similarity Score: {pair[4]}\n")
+    else:
+        print("❌ No similar addresses found.")
+
+# Run the function
+find_similar_addresses()
+
+```
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a7773ee8-83c6-4018-9092-c772e15d42e4" width="45%" />
+
+</p>
+
+## <p align="center"> TASK 5</p>
+### <p align="center"> Object Oriented Programming  </p>
+
+
+This module focuses on implementing object-oriented programming (OOP) concepts for a **Courier Management System**.  
+It includes entity classes with proper encapsulation, constructors, getters, setters, and collections for managing couriers, employees, and locations.
+
+
+### <p align="center"> project directory structure </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/34405969-ebb8-4a18-ab02-2da230bb8f4c" width="40%" />
+
+</p>
+
+### <p align="center"> running main script </p>
+
+![image](https://github.com/user-attachments/assets/705ce391-cfaf-4dab-a6e4-e39e075942e0)
+
+
