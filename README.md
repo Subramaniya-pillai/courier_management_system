@@ -438,9 +438,9 @@ def employee_login(name, password):
     conn.close()
 
     if result:
-        print(f"✅ Login successful! Welcome, {name}.")
+        print(f" Login successful! Welcome, {name}.")
     else:
-        print("❌ Invalid credentials. Please try again.")
+        print(" Invalid credentials. Please try again.")
 
 # Example usage
 if __name__ == "__main__":
@@ -481,7 +481,7 @@ def assign_courier(shipment_id):
     shipment = cursor.fetchone()
 
     if not shipment:
-        print("❌ Shipment not found.")
+        print(" Shipment not found.")
         return
 
     shipment_location, shipment_weight = shipment
@@ -499,13 +499,13 @@ def assign_courier(shipment_id):
 
     if assigned_courier:
         courier_id, courier_weight = assigned_courier
-        print(f"✅ Assigned Courier: {courier_id} (Max Weight: {courier_weight})")
+        print(f" Assigned Courier: {courier_id} (Max Weight: {courier_weight})")
 
         # Update shipment with assigned courier
         cursor.execute("UPDATE shipment SET courier_id = %s WHERE shipment_id = %s", (courier_id, shipment_id))
         conn.commit()
     else:
-        print("❌ No suitable courier available.")
+        print(" No suitable courier available.")
 
     cursor.close()
     conn.close()
@@ -554,11 +554,11 @@ def display_orders(customer_id):
     orders = cursor.fetchall()
 
     if not orders:
-        print("❌ No orders found for this customer.")
+        print(" No orders found for this customer.")
     else:
-        print(f"📦 Orders for Customer ID {customer_id}:")
+        print(f" Orders for Customer ID {customer_id}:")
         for order in orders:
-            print(f"✅ Courier ID: {order[0]}, Tracking No: {order[1]}, Status: {order[2]}, Order Date: {order[3]}")
+            print(f"Courier ID: {order[0]}, Tracking No: {order[1]}, Status: {order[2]}, Order Date: {order[3]}")
 
     cursor.close()
     conn.close()
@@ -607,10 +607,10 @@ def track_courier(courier_id):
         location = cursor.fetchone()
 
         if not location:
-            print("❌ Courier not found.")
+            print(" Courier not found.")
             break
 
-        print(f"🚚 Current Location: {location[0]}")
+        print(f"Current Location: {location[0]}")
 
         # Check if courier has reached its destination
         cursor.execute("""
@@ -619,7 +619,7 @@ def track_courier(courier_id):
         status = cursor.fetchone()
 
         if status and status[0].lower() == "delivered":
-            print("✅ Courier has reached its destination!")
+            print(" Courier has reached its destination!")
             break
 
         time.sleep(5)  # Simulate real-time tracking (refreshes every 5 seconds)
@@ -670,11 +670,11 @@ def track_courier(courier_id):
     tracking_data = cursor.fetchall()
 
     if tracking_data:
-        print(f"📦 Tracking History for Courier ID {courier_id}:")
+        print(f" Tracking History for Courier ID {courier_id}:")
         for row in tracking_data:
             print(f"➡ {row[2]} | {row[3]} | Status: {row[4]}")
     else:
-        print("❌ No tracking history found.")
+        print(" No tracking history found.")
 
     cursor.close()
     conn.close()
@@ -727,9 +727,9 @@ def find_nearest_courier(destination_location, weight):
     if courier:
         courier_id, location_id, courier_weight = courier
         print(
-            f"✅ Nearest Available Courier: ID {courier_id} at Location {location_id} with Capacity {courier_weight} kg.")
+            f" Nearest Available Courier: ID {courier_id} at Location {location_id} with Capacity {courier_weight} kg.")
     else:
-        print("❌ No suitable courier available.")
+        print(" No suitable courier available.")
 
     cursor.close()
     conn.close()
@@ -769,9 +769,9 @@ parcel_tracking_data = [
 def track_parcel(tracking_number):
     for parcel in parcel_tracking_data:
         if parcel[0] == tracking_number:
-            print(f"📦 Tracking Number: {tracking_number} - Status: {parcel[1]}")
+            print(f" Tracking Number: {tracking_number} - Status: {parcel[1]}")
             return
-    print("❌ Tracking number not found.")
+    print(" Tracking number not found.")
 
 # Get user input
 tracking_number = input("Enter Tracking Number: ").strip().upper()
@@ -814,7 +814,7 @@ def format_address(street, city, state, zip_code):
     formatted_city = city.title()
     formatted_state = state.upper()  # Converts state to uppercase
 
-    return f"✅ Formatted Address:\n{formatted_street}\n{formatted_city}, {formatted_state} {zip_code}"
+    return f" Formatted Address:\n{formatted_street}\n{formatted_city}, {formatted_state} {zip_code}"
 
 # Get user input and format address
 street = input("Enter Street: ")
@@ -846,15 +846,15 @@ import datetime
 # Function to generate order confirmation email
 def generate_order_email(customer_name, order_number, address, delivery_date):
     email_template = f"""
-    Subject: 🛍️ Order Confirmation - #{order_number}
+    Subject:  Order Confirmation - #{order_number}
 
     Dear {customer_name},
 
     Thank you for your order! We are pleased to confirm your purchase.
 
-    📦 **Order Number:** {order_number}  
-    📍 **Delivery Address:** {address}  
-    🚚 **Expected Delivery Date:** {delivery_date}  
+     **Order Number:** {order_number}  
+     **Delivery Address:** {address}  
+     **Expected Delivery Date:** {delivery_date}  
 
     Your package is being prepared for shipment. You will receive tracking updates soon.
 
@@ -921,14 +921,14 @@ def calculate_shipping_cost(source, destination, weight):
     elif (destination, source) in distance_data:  # Reverse lookup
         distance = distance_data[(destination, source)]
     else:
-        print("❌ Shipping route not found in database.")
+        print(" Shipping route not found in database.")
         return
 
     # Calculate cost
     shipping_cost = BASE_COST + (distance * COST_PER_KM) + (weight * COST_PER_KG)
 
     # Display result
-    print(f"✅ Shipping Cost from {source} to {destination}: ₹{shipping_cost:.2f}")
+    print(f" Shipping Cost from {source} to {destination}: ₹{shipping_cost:.2f}")
 
 
 # Get user input
@@ -961,7 +961,7 @@ import string
 # Function to generate a secure password
 def generate_password(length=12):
     if length < 8:
-        print("❌ Password length must be at least 8 characters.")
+        print(" Password length must be at least 8 characters.")
         return None
 
     # Define character sets
@@ -994,7 +994,7 @@ length = int(input("Enter the desired password length (minimum 8): "))
 # Generate and display the password
 secure_password = generate_password(length)
 if secure_password:
-    print(f"✅ Generated Secure Password: {secure_password}")
+    print(f" Generated Secure Password: {secure_password}")
 
 ```
 
@@ -1053,13 +1053,13 @@ def find_similar_addresses(threshold=0.8):
 
     # Display results
     if similar_pairs:
-        print("✅ Similar Addresses Found:")
+        print(" Similar Addresses Found:")
         for pair in similar_pairs:
-            print(f"📍 Address {pair[0]}: {pair[1]}")
-            print(f"📍 Address {pair[2]}: {pair[3]}")
-            print(f"🔍 Similarity Score: {pair[4]}\n")
+            print(f" Address {pair[0]}: {pair[1]}")
+            print(f" Address {pair[2]}: {pair[3]}")
+            print(f" Similarity Score: {pair[4]}\n")
     else:
-        print("❌ No similar addresses found.")
+        print(" No similar addresses found.")
 
 # Run the function
 find_similar_addresses()
@@ -1091,4 +1091,715 @@ It includes entity classes with proper encapsulation, constructors, getters, set
 
 ![image](https://github.com/user-attachments/assets/705ce391-cfaf-4dab-a6e4-e39e075942e0)
 
+
+## <p align="center"> TASK 7</p>
+### <p align="center"> Exception Handling  </p>
+
+
+(Scope: User Defined Exception/Checked /Unchecked Exception/Exception handling using try..catch
+finally,thow & throws keyword usage) 
+
+Step-by-Step Implementation:
+#### Create Custom Exceptions:
+
+TrackingNumberNotFoundException to be thrown when the tracking number is not found.
+
+InvalidEmployeeIdException to be thrown when the employee ID doesn't exist.
+
+#### Throwing Custom Exceptions:
+
+We will throw these exceptions in the methods based on specific conditions.
+
+#### Handling the Exceptions:
+
+The exceptions will be caught and handled in the main() method using try...catch blocks.
+
+#### Step 1: Create the Exception Class (exceptions/exceptions.py)
+Created a folder named exceptions/ 
+
+Inside the exceptions/ folder, created a file named exceptions.py and place the custom exception classes in this file.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4c63e18f-2599-414c-b3fe-4395e601cef9" width="20%" />
+
+</p>
+
+
+```
+# exceptions/exceptions.py
+
+class TrackingNumberNotFoundException(Exception):
+    """Exception raised when tracking number is not found."""
+    def __init__(self, message="Tracking number not found."):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidEmployeeIdException(Exception):
+    """Exception raised when the employee ID is invalid."""
+    def __init__(self, message="Invalid employee ID entered."):
+        self.message = message
+        super().__init__(self.message)
+
+```
+
+#### Step 2: Create the Courier Service Logic (service/courier_service.py)
+Created a folder named service/ 
+
+Inside the service/ folder, created a file named courier_service.py.
+
+In this file, you can define the methods for transferring and withdrawing amounts, validating employee IDs, and raising exceptions.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4245ccbb-f9c7-4770-ba96-691d75e22d1c" width="20%" />
+</p>
+
+
+```
+# service/courier_service.py
+from exceptions.exceptions import TrackingNumberNotFoundException, InvalidEmployeeIdException
+
+class CourierService:
+
+    # Simulating a database of tracking numbers
+    tracking_numbers_db = ["T1001", "T1002", "T1003"]
+    
+    # Simulating a database of employee IDs
+    employee_ids_db = [101, 102, 103]
+    
+    def transfer_amount(self, tracking_number, amount):
+        """Method to transfer amount; throws exception if tracking number not found."""
+        if tracking_number not in self.tracking_numbers_db:
+            raise TrackingNumberNotFoundException(f"Tracking number {tracking_number} does not exist!")
+        else:
+            print(f"Amount {amount} transferred successfully for tracking number {tracking_number}.")
+
+    def withdraw_amount(self, tracking_number, amount):
+        """Method to withdraw amount; throws exception if tracking number not found."""
+        if tracking_number not in self.tracking_numbers_db:
+            raise TrackingNumberNotFoundException(f"Tracking number {tracking_number} does not exist!")
+        else:
+            print(f"Amount {amount} withdrawn successfully for tracking number {tracking_number}.")
+
+    def validate_employee(self, employee_id):
+        """Method to validate employee ID; throws exception if ID not found."""
+        if employee_id not in self.employee_ids_db:
+            raise InvalidEmployeeIdException(f"Employee ID {employee_id} is invalid!")
+        else:
+            print(f"Employee ID {employee_id} is valid.")
+
+
+```
+
+#### Step 3: Main Program (main.py)
+In the main.py file, you will import the necessary service and exception classes, and call the service methods while handling the exceptions.
+
+```
+# main.py
+from service.courier_service import CourierService
+from exceptions.exceptions import TrackingNumberNotFoundException, InvalidEmployeeIdException
+
+def main():
+    courier_service = CourierService()
+
+    # Test cases to handle the exceptions
+
+    # Handling TrackingNumberNotFoundException
+    try:
+        courier_service.withdraw_amount("T1005", 500)
+    except TrackingNumberNotFoundException as e:
+        print(f"Exception caught: {e}")
+    finally:
+        print("Withdraw operation attempt finished.")
+
+    # Handling InvalidEmployeeIdException
+    try:
+        courier_service.validate_employee(105)
+    except InvalidEmployeeIdException as e:
+        print(f"Exception caught: {e}")
+    finally:
+        print("Employee validation attempt finished.")
+
+    # Valid case (no exception thrown)
+    try:
+        courier_service.transfer_amount("T1001", 1000)
+    except TrackingNumberNotFoundException as e:
+        print(f"Exception caught: {e}")
+    finally:
+        print("Transfer operation attempt finished.")
+
+# Execute main method
+if __name__ == "__main__":
+    main()
+
+```
+### <p align="center"> run main.py </p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/419db5d4-1c8b-4ef8-94c3-5e7cff56bf46" width="45%" />
+</p>
+
+#### Conclusion:
+
+exceptions/exceptions.py contains your custom exception classes.
+
+service/courier_service.py contains the business logic for your courier operations.
+
+main.py serves as the entry point of your application, where you handle exceptions in the main program flow.
+
+
+## <p align="center"> TASK 8</p>
+### <p align="center">  ArrayList/Hashmap  </p>
+
+#### <p align="center"> Task: Improve the Courier Management System by using Java collections </p>
+
+1. Create a new model named CourierCompanyCollection in entity package replacing the Array of
+Objects with List to accommodate dynamic updates in the CourierCompany class
+
+#### created a new model named CourierCompanyCollection in entity package
+
+```
+# entity/courier_company_collection.py
+
+class CourierCompanyCollection:
+    def __init__(self):
+        # Replace the array with a list to store couriers dynamically
+        self.couriers = []
+
+    def add_courier(self, courier):
+        """Add a new courier to the collection."""
+        self.couriers.append(courier)
+
+    def remove_courier(self, tracking_number):
+        """Remove a courier by tracking number."""
+        self.couriers = [courier for courier in self.couriers if courier.tracking_number != tracking_number]
+
+    def get_courier(self, tracking_number):
+        """Get a courier by tracking number."""
+        for courier in self.couriers:
+            if courier.tracking_number == tracking_number:
+                return courier
+        return None
+
+    def list_all_couriers(self):
+        """List all couriers in the collection."""
+        return self.couriers
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2a094209-fe07-42ac-bcb2-769bfe418e77" width="25%" />
+</p>
+
+#### main.py
+```
+# main.py
+from dao.courier_user_service_collection_impl import CourierUserServiceCollectionImpl
+from entity.courier import Courier
+
+# Create an instance of the service implementation
+user_service = CourierUserServiceCollectionImpl()
+
+# Place a new order
+courier = Courier(
+    sender_name="John Doe", sender_address="123 Street, NY",
+    receiver_name="Alice Smith", receiver_address="456 Avenue, CA",
+    weight=5.5, status="Yet to Transit", tracking_number="T1001", delivery_date=None, customer_id=1
+)
+
+tracking_number = user_service.place_order(courier)
+print(f" Order placed! Tracking Number: {tracking_number}")
+
+# Check order status
+print("📦 Order Status:", user_service.get_order_status(tracking_number))
+
+# Cancel an order
+if user_service.cancel_order(tracking_number):
+    print(" Order cancelled successfully.")
+else:
+    print(" Order cannot be cancelled.")
+
+```
+#### implementation:
+1. Placing an Order:
+When a new Courier object is created and the place_order method is called, the courier is added to the CourierCompanyCollection list, and a tracking number is generated and returned.
+
+2. Checking the Order Status:
+The get_order_status method is called with the tracking number, and it retrieves the courier's status, which will be "Yet to Transit" since that's the default status for new orders.
+
+3. Cancelling an Order:
+The cancel_order method is called with the tracking number. The courier is removed from the collection if it exists, and True is returned indicating successful cancellation. If the courier doesn't exist, False is returned.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d263942-dd2b-4553-ba39-06c9963e068b" width="25%" />
+</p>
+
+2. Create a new implementation class CourierUserServiceCollectionImpl class in package dao which
+implements ICourierUserService interface which holds a variable named companyObj of type
+CourierCompanyCollection
+
+#### 1. Create the Interface (ICourierUserService)
+
+```
+# dao/icourier_user_service.py
+from abc import ABC, abstractmethod
+
+class ICourierUserService(ABC):
+    
+    @abstractmethod
+    def place_order(self, courier):
+        pass
+    
+    @abstractmethod
+    def get_order_status(self, tracking_number):
+        pass
+    
+    @abstractmethod
+    def cancel_order(self, tracking_number):
+        pass
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/302e0526-3ea7-4370-be52-79fbc49ac613" width="25%" />
+</p>
+
+#### 2. Create the CourierCompanyCollection Class
+
+This class manages a collection of Courier objects, allowing dynamic updates to the collection.
+
+```
+# entity/courier_company_collection.py
+
+class CourierCompanyCollection:
+    def __init__(self):
+        self.couriers = []  # List to hold courier objects
+
+    def add_courier(self, courier):
+        """Add a new courier to the collection."""
+        self.couriers.append(courier)
+
+    def remove_courier(self, tracking_number):
+        """Remove a courier by tracking number."""
+        self.couriers = [courier for courier in self.couriers if courier.tracking_number != tracking_number]
+
+    def get_courier(self, tracking_number):
+        """Get a courier by tracking number."""
+        for courier in self.couriers:
+            if courier.tracking_number == tracking_number:
+                return courier
+        return None
+
+    def list_all_couriers(self):
+        """List all couriers in the collection."""
+        return self.couriers
+
+```
+#### 3. Implement the CourierUserServiceCollectionImpl Class
+
+This class will implement the ICourierUserService interface and will use CourierCompanyCollection for storing and managing courier data.
+
+```
+# dao/courier_user_service_collection_impl.py
+from entity.courier_company_collection import CourierCompanyCollection
+from dao.icourier_user_service import ICourierUserService
+from entity.courier import Courier
+
+class CourierUserServiceCollectionImpl(ICourierUserService):
+    def __init__(self):
+        self.company_obj = CourierCompanyCollection()  # Holds the collection of couriers
+
+    def place_order(self, courier):
+        """Place a new courier order and add it to the collection."""
+        self.company_obj.add_courier(courier)
+        return courier.tracking_number
+
+    def get_order_status(self, tracking_number):
+        """Get the status of a courier by tracking number."""
+        courier = self.company_obj.get_courier(tracking_number)
+        if courier:
+            return courier.status
+        return "Courier not found."
+
+    def cancel_order(self, tracking_number):
+        """Cancel a courier order by removing it from the collection."""
+        courier = self.company_obj.get_courier(tracking_number)
+        if courier:
+            self.company_obj.remove_courier(tracking_number)
+            return True
+        return False
+
+```
+#### 4. Using the Classes in the Main Program
+In your main.py, you will create an instance of CourierUserServiceCollectionImpl to interact with the collection of couriers.
+```
+# main.py
+from dao.courier_user_service_collection_impl import CourierUserServiceCollectionImpl
+from entity.courier import Courier
+
+# Create an instance of the service implementation
+user_service = CourierUserServiceCollectionImpl()
+
+# Place a new order
+courier = Courier(
+    sender_name="John Doe", sender_address="123 Street, NY",
+    receiver_name="Alice Smith", receiver_address="456 Avenue, CA",
+    weight=5.5, status="Yet to Transit", tracking_number="T1001", delivery_date=None, customer_id=1
+)
+
+tracking_number = user_service.place_order(courier)
+print(f" Order placed! Tracking Number: {tracking_number}")
+
+# Check order status
+print(" Order Status:", user_service.get_order_status(tracking_number))
+
+# Cancel an order
+if user_service.cancel_order(tracking_number):
+    print(" Order cancelled successfully.")
+else:
+    print(" Order cannot be cancelled.")
+
+```
+#### <p align ="center"> output </p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e7a18c8f-01fd-42b9-999e-94a62fa954e1" width="45%" />
+</p>
+
+
+## <p align="center"> TASK 8</p>
+### <p align="center">  Service implementation   </p>
+
+1.Create _CourierUserServiceImpl_ class which implements _ICourierUserService_ interface which
+holds a variable named _companyObj_ of type _CourierCompany._
+This variable can be used to access the Object Arrays to access data relevant in method
+implementations. 
+
+##### we have already created   CourierCompany Class , ICourierUserService Interface , CourierUserServiceImpl Class , Courier Class for the previous tasks now modifying main class according to the given question
+## Image Gallery
+
+
+<table>
+  <tr>
+    <td style="text-align:center">
+      <img src="https://github.com/user-attachments/assets/caa4decd-7c22-4590-97aa-bbac5033a0b9" alt="Image 1" width="200"/>
+      <br />
+      <strong>CourierCompany Class</strong>
+    </td>
+    <td style="text-align:center">
+      <img src="https://github.com/user-attachments/assets/592872d9-c040-4a99-a5c1-3ee9bffbc236" alt="Image 2" width="200"/>
+      <br />
+      <strong>ICourierUserService Interface</strong>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="https://github.com/user-attachments/assets/3e7fd074-d29b-41f5-b688-57fe2facb2b8" alt="Image 3" width="200"/>
+      <br />
+      <strong>CourierUserServiceImpl Class</strong>
+    </td>
+    <td style="text-align:center">
+      <img src="https://github.com/user-attachments/assets/bfb3a9fc-0138-423c-88f9-97eb00e67c32" alt="Image 4" width="200"/>
+      <br />
+      <strong>Courier Class</strong>
+    </td>
+  </tr>
+</table>
+
+#### main.py
+```
+# main.py
+from dao.courier_user_service_impl import CourierUserServiceImpl
+from entity.courier import Courier
+
+# Create an instance of the service implementation
+user_service = CourierUserServiceImpl()
+
+# Place a new order
+courier = Courier(
+    sender_name="John Doe", sender_address="123 Street, NY",
+    receiver_name="Alice Smith", receiver_address="456 Avenue, CA",
+    weight=5.5, status="Yet to Transit", tracking_number="T1001", delivery_date=None, customer_id=1
+)
+
+tracking_number = user_service.place_order(courier)
+print(f" Order placed! Tracking Number: {tracking_number}")
+
+# Check order status
+print(" Order Status:", user_service.get_order_status(tracking_number))
+
+# Cancel an order
+if user_service.cancel_order(tracking_number):
+    print(" Order cancelled successfully.")
+else:
+    print(" Order cannot be cancelled.")
+
+```
+![image](https://github.com/user-attachments/assets/4f5c47ce-1130-457d-94d5-24895ac08043)
+
+## <p align="center"> TASK 9</p>
+### <p align="center">  Database Interaction  </p>
+
+#### 1. Write code to establish a connection to your SQL database. 
+```
+
+# db_connection.py
+import psycopg2  # For PostgreSQL; install this library using pip if not already installed.
+
+def get_db_connection():
+    """Establish and return a database connection."""
+    try:
+        # Replace these values with your actual DB connection details
+        connection = psycopg2.connect(
+            host="localhost",
+            user="root",
+            password="Vineeth1246@",
+            database="courier_db"
+        )
+        return connection
+    except Exception as e:
+        print(f"Error connecting to the database: {e}")
+        return None
+
+```
+#### 2. Service Class for Database Operations
+
+Create a Service class _CourierServiceDb_ in _dao_ with a static variable named _connection_ of
+type Connection which can be assigned in the constructor by invoking the method in
+_DBConnection_ Class.
+
+#### Steps to Implement:
+
+Create a new file named courier_service_db.py inside dao.
+
+code:
+```
+from connectionutil.db_connection import DBConnection
+
+class CourierServiceDb:
+    # Static connection variable
+    connection = None  
+
+    def __init__(self):
+        """Initialize the connection using DBConnection"""
+        if CourierServiceDb.connection is None:
+            CourierServiceDb.connection = DBConnection.get_connection()
+
+    def insert_courier(self, courier):
+        """Insert a new courier order into the database"""
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            INSERT INTO courier (sender_name, sender_address, receiver_name, receiver_address, 
+                                 weight, status, tracking_number, delivery_date, customer_id) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            values = (
+                courier.sender_name, courier.sender_address,
+                courier.receiver_name, courier.receiver_address,
+                courier.weight, "Yet to Transit", courier.tracking_number,
+                courier.delivery_date, courier.customer_id
+            )
+            cursor.execute(query, values)
+            self.connection.commit()
+            print(" Courier order inserted successfully!")
+
+        except Exception as e:
+            print(f" Error inserting courier: {e}")
+
+        finally:
+            cursor.close()
+
+    def update_status(self, tracking_number, new_status):
+        """Update the status of a courier"""
+        try:
+            cursor = self.connection.cursor()
+            query = "UPDATE courier SET status = %s WHERE tracking_number = %s"
+            cursor.execute(query, (new_status, tracking_number))
+            self.connection.commit()
+            print(f" Updated status to '{new_status}' for Tracking Number: {tracking_number}")
+
+        except Exception as e:
+            print(f" Error updating status: {e}")
+
+        finally:
+            cursor.close()
+
+    def get_courier_by_tracking(self, tracking_number):
+        """Retrieve courier details by tracking number"""
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT * FROM courier WHERE tracking_number = %s"
+            cursor.execute(query, (tracking_number,))
+            result = cursor.fetchone()
+            return result
+
+        except Exception as e:
+            print(f" Error fetching courier: {e}")
+
+        finally:
+            cursor.close()
+
+```
+#### Step 2: Create the DBConnection Class
+already created in the last tasks
+
+####  Step 3: Create the CourierServiceDb Class
+
+already created in the last tasks
+
+#### Step 4: Update main.py
+
+```
+from dao.courier_service_db import CourierServiceDb
+from entity.courier import Courier
+
+# Initialize the database service
+service = CourierServiceDb()
+
+# Create a courier order
+courier = Courier(sender_name="John Doe", sender_address="123 Street, NY",
+                  receiver_name="Alice Smith", receiver_address="456 Avenue, CA",
+                  weight=5.5, status="Yet to Transit", tracking_number="T12345", 
+                  delivery_date=None, customer_id=1)
+
+# Insert the courier order
+service.insert_courier(courier)
+
+# Retrieve the order status
+order = service.get_courier_by_tracking("T12345")
+print(" Order Details:", order)
+
+# Update order status
+service.update_status("T12345", "Delivered")
+
+# Verify update
+updated_order = service.get_courier_by_tracking("T12345")
+print(" Updated Order Details:", updated_order)
+
+```
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/502c9cfb-63a6-4614-988e-00793616cfc6" width="65%" />
+</p>
+
+#### 3. Include methods to insert, update, and retrieve data from the database (e.g., inserting a new order, updating courier status). 
+
+
+##### Steps to Implement
+Create a DBConnection class to establish a database connection.
+
+Create a CourierServiceDb class with methods to:
+
+1.   Insert a new courier order
+2.   Update the courier status
+3.   Retrieve courier details
+
+#### db_connection.py (Database Connection)
+```
+import mysql.connector  # Use `import psycopg2` for PostgreSQL
+
+class DBConnection:
+    _connection = None
+
+    @staticmethod
+    def get_connection():
+        if DBConnection._connection is None:
+            try:
+                DBConnection._connection = mysql.connector.connect(
+                    host="localhost",
+                    user="root",
+                    password="your_password",
+                    database="courier_db"
+                )
+                print(" Database connection established successfully!")
+            except Exception as e:
+                print(" Error connecting to the database:", e)
+        return DBConnection._connection
+
+```
+#### courier_service_db.py (Service Class for Database Operations)
+
+```
+from db_connection import DBConnection
+
+class CourierServiceDb:
+    def __init__(self):
+        self.connection = DBConnection.get_connection()
+        self.cursor = self.connection.cursor()
+
+    def insert_order(self, sender_name, sender_address, receiver_name, receiver_address, weight, tracking_number, customer_id):
+        """Inserts a new courier order into the database."""
+        query = """INSERT INTO courier (sender_name, sender_address, receiver_name, receiver_address, 
+                   weight, status, tracking_number, delivery_date, customer_id) 
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, NULL, %s)"""
+        values = (sender_name, sender_address, receiver_name, receiver_address, weight, "Yet to Transit", tracking_number, customer_id)
+
+        try:
+            self.cursor.execute(query, values)
+            self.connection.commit()
+            print(" Courier order inserted successfully!")
+        except Exception as e:
+            print(" Error inserting order:", e)
+
+    def update_status(self, tracking_number, new_status):
+        """Updates the status of an existing courier order."""
+        query = "UPDATE courier SET status = %s WHERE tracking_number = %s"
+
+        try:
+            self.cursor.execute(query, (new_status, tracking_number))
+            self.connection.commit()
+            print(f" Updated status to '{new_status}' for Tracking Number: {tracking_number}")
+        except Exception as e:
+            print(" Error updating status:", e)
+
+    def get_order_details(self, tracking_number):
+        """Retrieves and displays details of a specific order."""
+        query = "SELECT * FROM courier WHERE tracking_number = %s"
+
+        try:
+            self.cursor.execute(query, (tracking_number,))
+            order = self.cursor.fetchone()
+            if order:
+                print(" Order Details:", order)
+                return order
+            else:
+                print(" No order found with the given tracking number.")
+                return None
+        except Exception as e:
+            print(" Error retrieving order:", e)
+
+```
+
+#### main.py (Testing the Methods)
+```
+from courier_service_db import CourierServiceDb
+
+# Initialize the service
+courier_service = CourierServiceDb()
+
+# Insert a new order
+tracking_number = "T12345"
+courier_service.insert_order(
+    sender_name="John Doe",
+    sender_address="123 Street, NY",
+    receiver_name="Alice Smith",
+    receiver_address="456 Avenue, CA",
+    weight=5.5,
+    tracking_number=tracking_number,
+    customer_id=1
+)
+
+# Retrieve and print the order details
+order = courier_service.get_order_details(tracking_number)
+
+# Update courier status to 'Delivered'
+courier_service.update_status(tracking_number, "Delivered")
+
+# Retrieve and print updated order details
+courier_service.get_order_details(tracking_number)
+
+```
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/502c9cfb-63a6-4614-988e-00793616cfc6" width="65%" />
+</p>
 
