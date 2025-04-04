@@ -1803,3 +1803,217 @@ courier_service.get_order_details(tracking_number)
   <img src="https://github.com/user-attachments/assets/502c9cfb-63a6-4614-988e-00793616cfc6" width="65%" />
 </p>
 
+#### 4. Implement a feature to retrieve and display the delivery history of a specific parcel by querying the database
+
+
+##### Steps to Implement Delivery History Retrieval
+
+* To retrieve and display the delivery history of a specific parcel, follow these steps:
+
+* Ensure  database has a delivery_history table to log status updates.
+
+* Modify CourierServiceDb to include a method that retrieves delivery history using tracking_number.
+
+* Call this method in main.py to display the history of a given tracking number.
+
+##### delivery_history Table Schema
+
+```
+CREATE TABLE delivery_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tracking_number VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+```
+
+##### courier_service_db.py (Updated Service Class)
+
+```
+
+from db_connection import DBConnection
+
+class CourierServiceDb:
+    def __init__(self):
+        self.connection = DBConnection.get_connection()
+        self.cursor = self.connection.cursor()
+
+    def insert_order(self, sender_name, sender_address, receiver_name, receiver_address, weight, tracking_number, customer_id):
+        """Inserts a new courier order into the database and initializes delivery history."""
+        query = """INSERT INTO courier (sender_name, sender_address, receiver_name, receiver_address, 
+                   weight, status, tracking_number, delivery_date, customer_id) 
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, NULL, %s)"""
+        values = (sender_name, sender_address, receiver_name, receiver_address, weight, "Yet to Transit", tracking_number, customer_id)
+
+        try:
+            self.cursor.execute(query, values)
+            self.connection.commit()
+            print(" Courier order inserted successfully!")
+
+            # Insert initial status in delivery history
+            self._insert_delivery_history(tracking_number, "Yet to Transit")
+        except Exception as e:
+            print(" Error inserting order:", e)
+
+    def update_status(self, tracking_number, new_status):
+        """Updates the status of an existing courier order and logs it in delivery history."""
+        query = "UPDATE courier SET status = %s WHERE tracking_number = %s"
+
+        try:
+            self.cursor.execute(query, (new_status, tracking_number))
+            self.connection.commit()
+            print(f" Updated status to '{new_status}' for Tracking Number: {tracking_number}")
+
+            # Log status update in delivery history
+            self._insert_delivery_history(tracking_number, new_status)
+        except Exception as e:
+            print(" Error updating status:", e)
+
+    def _insert_delivery_history(self, tracking_number, status):
+        """Inserts a status update into the delivery history table."""
+        query = "INSERT INTO delivery_history (tracking_number, status) VALUES (%s, %s)"
+        try:
+            self.cursor.execute(query, (tracking_number, status))
+            self.connection.commit()
+        except Exception as e:
+            print(" Error inserting into delivery history:", e)
+
+    def get_order_details(self, tracking_number):
+        """Retrieves and displays details of a specific order."""
+        query = "SELECT * FROM courier WHERE tracking_number = %s"
+
+        try:
+            self.cursor.execute(query, (tracking_number,))
+            order = self.cursor.fetchone()
+            if order:
+                print(" Order Details:", order)
+                return order
+            else:
+                print(" No order found with the given tracking number.")
+                return None
+        except Exception as e:
+            print(" Error retrieving order:", e)
+
+    def get_delivery_history(self, tracking_number):
+        """Retrieves and displays the delivery history of a specific parcel."""
+        query = "SELECT status, updated_at FROM delivery_history WHERE tracking_number = %s ORDER BY updated_at"
+
+        try:
+            self.cursor.execute(query, (tracking_number,))
+            history = self.cursor.fetchall()
+            if history:
+                print(f" Delivery History for Tracking Number: {tracking_number}")
+                for status, timestamp in history:
+                    print(f"   {status} at {timestamp}")
+            else:
+                print(" No delivery history found for this tracking number.")
+        except Exception as e:
+            print(" Error retrieving delivery history:", e)
+
+```
+##### main.py (Test the Feature)
+```
+from courier_service_db import CourierServiceDb
+
+#### Initialize the service
+courier_service = CourierServiceDb()
+
+#### Insert a new order
+tracking_number = "T12345"
+courier_service.insert_order(
+    sender_name="John Doe",
+    sender_address="123 Street, NY",
+    receiver_name="Alice Smith",
+    receiver_address="456 Avenue, CA",
+    weight=5.5,
+    tracking_number=tracking_number,
+    customer_id=1
+)
+
+#### Retrieve and print the order details
+courier_service.get_order_details(tracking_number)
+
+#### Update courier status to 'In Transit'
+courier_service.update_status(tracking_number, "In Transit")
+
+#### Update courier status to 'Out for Delivery'
+courier_service.update_status(tracking_number, "Out for Delivery")
+
+#### Update courier status to 'Delivered'
+courier_service.update_status(tracking_number, "Delivered")
+
+#### Retrieve and print delivery history
+courier_service.get_delivery_history(tracking_number)
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f2820eb8-6954-4900-b43b-7b8ec08579be" width="65%" />
+</p>
+
+
+#### 5 . Generate and display reports using data retrieved from the database
+(e.g., shipment status report, revenue report). 
+
+```
+import mysql.connector
+
+# Establish Database Connection
+def get_db_connection():
+    return mysql.connector.connect(
+        host="your_host",
+        user="your_user",
+        password="your_password",
+        database="your_database"
+    )
+
+# 1️ **Shipment Status Report**
+def shipment_status_report():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+    SELECT status, COUNT(*) as count
+    FROM courier
+    GROUP BY status
+    ORDER BY count DESC
+    """
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    print("\n **Shipment Status Report**")
+    for status, count in results:
+        print(f"   {status}: {count} orders")
+
+    cursor.close()
+    conn.close()
+
+# 2️ **Revenue Report (Assuming Rate per KG = $5)**
+def revenue_report():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    rate_per_kg = 5  # Assumed rate per kg
+    query = """
+    SELECT SUM(weight * %s) AS total_revenue
+    FROM courier
+    WHERE status = 'Delivered'
+    """
+    cursor.execute(query, (rate_per_kg,))
+    total_revenue = cursor.fetchone()[0]
+
+    print("\n **Revenue Report**")
+    print(f"   Total Revenue from Delivered Shipments: ${total_revenue:.2f}")
+
+    cursor.close()
+    conn.close()
+
+# Run Reports
+shipment_status_report()
+revenue_report()
+
+```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/044ad12d-ee74-4390-8afe-c42525dfae19" width="65%" />
+</p>
+
