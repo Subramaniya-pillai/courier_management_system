@@ -788,6 +788,40 @@ following critirea. Ensure that names contain only letters and are properly capi
 contain special characters, and phone numbers follow a specific format (e.g., ###-###-####).
 
 ```
+import re
+
+# Function to validate customer data
+def validate_customer_data(data, detail):
+    if detail == "name":
+        if re.fullmatch(r"[A-Za-z ]+", data):
+            return f"Valid Name: {data.title()}"
+        else:
+            return " Invalid Name! Only letters and spaces are allowed."
+
+    elif detail == "address":
+        if re.fullmatch(r"[A-Za-z0-9 ,.-]+", data):
+            return f"Valid Address: {data}"
+        else:
+            return " Invalid Address! Special characters are not allowed."
+
+    elif detail == "phone":
+        if re.fullmatch(r"\d{3}-\d{3}-\d{4}", data):
+            return f" Valid Phone Number: {data}"
+        else:
+            return " Invalid Phone Number! Use format ###-###-####."
+
+    else:
+        return " Invalid detail type! Use 'name', 'address', or 'phone'."
+
+# Get user input and validate
+name = input("Enter your name: ")
+print(validate_customer_data(name, "name"))
+
+address = input("Enter your address: ")
+print(validate_customer_data(address, "address"))
+
+phone = input("Enter your phone number (###-###-####): ")
+print(validate_customer_data(phone, "phone"))
 
 ```
 ### <p align="center"> valid  / invalid format </p>
@@ -808,7 +842,7 @@ import re
 # Function to format address
 def format_address(street, city, state, zip_code):
     if not re.fullmatch(r"\d{6}(-\d{4})?", zip_code):  # Validates ZIP (##### or #####-####)
-        return "❌ Invalid ZIP Code! Use format ##### or #####-####."
+        return " Invalid ZIP Code! Use format ##### or #####-####."
 
     formatted_street = street.title()  # Capitalizes first letter of each word
     formatted_city = city.title()
@@ -1310,7 +1344,7 @@ tracking_number = user_service.place_order(courier)
 print(f" Order placed! Tracking Number: {tracking_number}")
 
 # Check order status
-print("📦 Order Status:", user_service.get_order_status(tracking_number))
+print(" Order Status:", user_service.get_order_status(tracking_number))
 
 # Cancel an order
 if user_service.cancel_order(tracking_number):
